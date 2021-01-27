@@ -82,7 +82,7 @@ token Lexer::getNextToken(void)
             case '(':next.txt+=buff[index];next.type=TOKEN_LP;index++;return next;
             case ')':next.txt+=buff[index];next.type=TOKEN_RP;index++;return next;
             case '{':next.txt+=buff[index];next.type=TOKEN_LC;index++;return next;
-            case '}':next.txt+=buff[index];next.type=TOKEN_LC;index++;return next;
+            case '}':next.txt+=buff[index];next.type=TOKEN_RC;index++;return next;
             case ';':next.txt+=buff[index];next.type=TOKEN_SEMICOLON;index++;return next;
             case '"':index++;StringState(&next);return next;
             default:{exit(1);}
