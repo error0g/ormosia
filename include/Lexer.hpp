@@ -36,6 +36,8 @@ class Lexer
     private:
         char  *buff;
         int index=0;
+        void DigitState(token *token);
+        void StringState(token *token);
     
     public:
         Lexer(char *buffer);
