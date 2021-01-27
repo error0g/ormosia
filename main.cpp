@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include "Lexer.hpp"
-#include "ORMO.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -33,7 +32,12 @@ int main(int argc,char  **args)
    infile.close();
 
    Lexer lexer=Lexer(buffer);
-   token *token=lexer.getNextToken();
-
+   token token=lexer.getNextToken();
+   while (token.type!=EOF)
+   {
+     cout<<"<"<<token.txt<<","<<token.type<<">"<<endl;
+     token=lexer.getNextToken();
+   }
+   
    return 0;
 }
