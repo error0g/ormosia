@@ -26,10 +26,22 @@ Lexer::Lexer(char *buffer)
 {
     buff=buffer;
     rwtab[string("function")] = TOKEN_FUNCTION;
-    rwtab[string("int")] = TOKEN_INT_LITERAL;
-    rwtab[string("double")] = TOKEN_DOUBLE_LITERAL;
+    rwtab[string("var")] = TOKEN_INT_VAR;
+    rwtab[string("int")] = TOKEN_INT_INT;
+    rwtab[string("double")] = TOKEN_INT_DOUBLE;
+    rwtab[string("char")] = TOKEN_INT_CHAR;
+    rwtab[string("bool")] = TOKEN_INT_BOOL;
     rwtab[string("if")] =  TOKEN_IF;
+    rwtab[string("else")] =  TOKEN_ELSE;
+    rwtab[string("elseif")] =  TOKEN_ELSEIF;
     rwtab[string("for")] =  TOKEN_FOR;
+    rwtab[string("while")] =  TOKEN_WHILE;
+    rwtab[string("break")] =  TOKEN_BREAK;
+    rwtab[string("true")] =  TOKEN_TRUE_T;
+    rwtab[string("false")] =  TOKEN_FALSE_T;
+    rwtab[string("continue")] =  TOKEN_CONTINUE;
+    rwtab[string("null")] =  TOKEN_NULL_T;
+    rwtab[string("return")] =  TOKEN_RETURN_T;
 }
 
 token Lexer::getNextToken(void)
@@ -108,8 +120,81 @@ token Lexer::getNextToken(void)
                 }
                return next;
             }
-
-        
+            case '-':{
+                TrySplit(&next,TOKEN_SUB);
+                switch (buff[index])
+                {
+                    case '-': TrySplit(&next,TOKEN_DECREMENT);break;
+                    case '=': TrySplit(&next,TOKEN_SUB_ASSIGN_T);break;
+                }
+               return next;
+            }
+            case '*':{
+                TrySplit(&next,TOKEN_MUL);
+                switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_MUL_ASSIGN_T);break;
+                }
+               return next;
+            }
+           case '/':{
+                TrySplit(&next,TOKEN_DIV);
+                switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_DIV_ASSIGN_T);break;
+                }
+               return next;
+            }
+           case '%':{
+                TrySplit(&next,TOKEN_MOD);
+                switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_MOD_ASSIGN_T);break;
+                }
+               return next;
+            }
+          case '!':{
+               TrySplit(&next,TOKEN_EXCLAMATION);
+               switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_NE);break;
+                }
+               return next;
+          }
+          case '>':{
+               TrySplit(&next,TOKEN_GT);
+               switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_GE);break;
+                }
+               return next;
+          }
+          case '<':{
+               TrySplit(&next,TOKEN_LT);
+               switch (buff[index])
+                {
+                    case '=': TrySplit(&next,TOKEN_LE);break;
+                }
+               return next;
+          }
+          case '|':{
+               index++;
+               switch (buff[index])
+                {
+                    case '|': TrySplit(&next,TOKEN_LOGICAL_OR);break;
+                    default:exit(1);
+                }
+               return next;
+          }
+          case '&':{
+               index++;
+               switch (buff[index])
+                {
+                    case '&': TrySplit(&next,TOKEN_LOGICAL_AND);break;
+                    default:exit(1);
+                }
+               return next;
+          }
             default:{exit(1);}
         }
     }

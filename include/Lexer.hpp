@@ -50,6 +50,15 @@ enum tokenType
     TOKEN_INCREMENT,
     TOKEN_DECREMENT,
     TOKEN_EXCLAMATION,
+    TOKEN_GT,
+    TOKEN_GE,
+    TOKEN_LT,
+    TOKEN_LE,
+    TOKEN_INT,
+    TOKEN_DOUBLE,
+    TOKEN_CHAR,
+    TOKEN_VAR,
+    TOKEN_INT_BOOL,
 };
 
 typedef struct token_tag{
