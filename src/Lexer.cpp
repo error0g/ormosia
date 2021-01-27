@@ -28,6 +28,8 @@ Lexer::Lexer(char *buffer)
     rwtab[string("function")] = TOKEN_FUNCTION;
     rwtab[string("int")] = TOKEN_INT_LITERAL;
     rwtab[string("double")] = TOKEN_DOUBLE_LITERAL;
+    rwtab[string("if")] =  TOKEN_IF;
+    rwtab[string("for")] =  TOKEN_FOR;
 }
 
 token Lexer::getNextToken(void)
@@ -79,12 +81,35 @@ token Lexer::getNextToken(void)
 
         switch(buff[index])
         {
-            case '(':next.txt+=buff[index];next.type=TOKEN_LP;index++;return next;
-            case ')':next.txt+=buff[index];next.type=TOKEN_RP;index++;return next;
-            case '{':next.txt+=buff[index];next.type=TOKEN_LC;index++;return next;
-            case '}':next.txt+=buff[index];next.type=TOKEN_RC;index++;return next;
-            case ';':next.txt+=buff[index];next.type=TOKEN_SEMICOLON;index++;return next;
+            case '(':TrySplit(&next,TOKEN_LP);return next;
+            case ')':TrySplit(&next,TOKEN_RP);return next;
+            case '{':TrySplit(&next,TOKEN_LC);return next;
+            case '}':TrySplit(&next,TOKEN_RC);return next;
+            case ';':TrySplit(&next,TOKEN_SEMICOLON);return next;
             case '"':index++;StringState(&next);return next;
+            case '=':
+            {
+                TrySplit(&next,TOKEN_ASSIGN_T);
+                switch (buff[index])
+                {
+                  case '=':
+                  {
+                    TrySplit(&next,TOKEN_EQ);break;
+                  }
+                }
+                return next;
+            }
+            case '+':{
+                TrySplit(&next,TOKEN_ADD);
+                switch (buff[index])
+                {
+                    case '+': TrySplit(&next,TOKEN_INCREMENT);break;
+                    case '=': TrySplit(&next,TOKEN_ADD_ASSIGN_T);break;
+                }
+               return next;
+            }
+
+        
             default:{exit(1);}
         }
     }
@@ -146,8 +171,7 @@ void Lexer::StringState(token *next)
     
     while (buff[index]!='\0')
     {
-       
-        if(tag==STRING_TAG_OPEN&&buff[index]=='"')
+      if(tag==STRING_TAG_OPEN&&buff[index]=='"')
         {
             tag=STRING_TAG_CLOSE;
             index++;
@@ -156,10 +180,26 @@ void Lexer::StringState(token *next)
         }
         switch (buff[index])
         {
-        case '\n':
-         next->txt+='\n';index++;continue;
+            case '\n':
+            next->txt+='\n';index++;continue;
+            case '\\':
+            {   
+                index++;
+                switch (buff[index])
+                {
+                    case 'n':next->txt+='\n'; break;
+                    case '\\':next->txt+='\\'; break;
+                    case '\'':next->txt+='\''; break;
+                    case 't':next->txt+='\t'; break;
+                    case '\"':next->txt+='\"'; break;
+                default:
+                    exit(1);
+                }
+                break;
+            }
+            default:
+                next->txt+=buff[index];
         }
-        next->txt+=buff[index];
         index++;
     }
     if(tag==STRING_TAG_OPEN)
@@ -167,4 +207,11 @@ void Lexer::StringState(token *next)
         exit(1);
     }
    
+}
+
+void Lexer::TrySplit(token *next,tokenType type)
+{
+    next->txt+=buff[index];
+    next->type=type;
+    index++;
 }
