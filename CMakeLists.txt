@@ -13,4 +13,4 @@ ADD_SUBDIRECTORY(./src)
 #将名为 DIR_TOOT_SRCS的源文件编译成一个名称为 Demo 的可执行文件。
 add_executable(ormosia ${DIR_TOOT_SRCS})
 
-target_link_libraries(ormosia Lexer)
+target_link_libraries(ormosia Lexer Parser)

@@ -26,11 +26,11 @@ Lexer::Lexer(char *buffer)
 {
     buff=buffer;
     rwtab[string("function")] = TOKEN_FUNCTION;
-    rwtab[string("var")] = TOKEN_INT_VAR;
-    rwtab[string("int")] = TOKEN_INT_INT;
-    rwtab[string("double")] = TOKEN_INT_DOUBLE;
-    rwtab[string("char")] = TOKEN_INT_CHAR;
-    rwtab[string("bool")] = TOKEN_INT_BOOL;
+    rwtab[string("var")] = TOKEN_VAR;
+    rwtab[string("int")] = TOKEN_INT;
+    rwtab[string("double")] = TOKEN_DOUBLE;
+    rwtab[string("char")] = TOKEN_CHAR;
+    rwtab[string("bool")] = TOKEN_BOOL;
     rwtab[string("if")] =  TOKEN_IF;
     rwtab[string("else")] =  TOKEN_ELSE;
     rwtab[string("elseif")] =  TOKEN_ELSEIF;
@@ -267,6 +267,7 @@ void Lexer::StringState(token *next)
         {
             case '\n':
             next->txt+='\n';index++;continue;
+            //转义
             case '\\':
             {   
                 index++;

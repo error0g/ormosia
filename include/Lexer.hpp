@@ -58,7 +58,7 @@ enum tokenType
     TOKEN_DOUBLE,
     TOKEN_CHAR,
     TOKEN_VAR,
-    TOKEN_INT_BOOL,
+    TOKEN_BOOL,
 };
 
 typedef struct token_tag{
