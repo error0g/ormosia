@@ -328,10 +328,7 @@ token* Lexer::NewToken()
         return p;
     }
 
-    while (tokenList!=nullptr)
-    {
-        tokenList=tokenList->next;
-    }
+
     p->next=tokenList;
     tokenList=p;
     return p;
