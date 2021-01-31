@@ -17,13 +17,11 @@ bool Parser::parse()
 {
     try
     {
-        match(TOKEN_INT);
-        match(TOKEN_IDENTIFIER);
-        match(TOKEN_SEMICOLON);
+       expr();
     }
-    catch(const std::exception& e)
+    catch(const char *c)
     {
-        std::cerr << e.what() << '\n';
+        std::cerr << c << '\n';
     }
     lexer->FreeToken();
     return true;
@@ -56,5 +54,54 @@ void Parser::match(tokenType type)
     else {
         cout<<LL(1)->type<<":"<<type;
         throw "error";
+    }
+}
+void Parser::expr()
+{
+    term();expr_tail();
+}
+void Parser::expr_tail()
+{
+    switch(LL(1)->type)
+    {
+        case TOKEN_ADD: {
+            match(TOKEN_ADD);
+            term();
+            expr_tail();
+            break;
+        }
+        case TOKEN_SUB: {
+            match(TOKEN_SUB);
+            term();
+            expr_tail();
+              break;
+        }
+    }
+}
+void Parser::term()
+{
+    factor();
+}
+void Parser::factor()
+{
+    switch(LL(1)->type)
+    {
+        case TOKEN_LP:
+        {
+            match(TOKEN_LP);
+            expr();
+            match(TOKEN_RP);
+            break;
+        }
+        case TOKEN_INT_LITERAL:
+        {
+            consume();
+            break;
+        }
+        default:
+        {
+            cout<<LL(1)->type<<endl;
+            throw "error";
+        }
     }
 }

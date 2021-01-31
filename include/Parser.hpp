@@ -14,7 +14,10 @@ class Parser{
         token* TokenCache [TOKEN_CACHE_SIZE];
         Lexer *lexer;
         void consume();
-        
+        void expr();
+        void expr_tail();
+        void term();
+        void factor();
     public:
         Parser(Lexer *lr);
         bool parse();

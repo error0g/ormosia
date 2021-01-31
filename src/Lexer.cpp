@@ -328,7 +328,6 @@ token* Lexer::NewToken()
         return p;
     }
 
-
     p->next=tokenList;
     tokenList=p;
     return p;
