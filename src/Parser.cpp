@@ -5,31 +5,27 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::ifstream;
-void Parser::match(tokenType type)
+
+
+token* Parser::LL(int k)
 {
-    if(LL(1).type==type)
-    {
-        index++;
-    }
-    else {
-        exit(1);
-    }
-}
-
-token Parser::LL(int k)
-{
-    if((index+k-1)>=TOKEN_CACHE_SIZE)
-    {
-
-    }
-
-    return TokenCache[index+k-1];
+    return TokenCache[(index+k-1)%TOKEN_CACHE_SIZE];
 }
 
 
 bool Parser::parse()
 {
- 
+    try
+    {
+        match(TOKEN_INT);
+        match(TOKEN_IDENTIFIER);
+        match(TOKEN_SEMICOLON);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    lexer->FreeToken();
     return true;
 }
 
@@ -38,10 +34,27 @@ Parser::Parser(Lexer* lr)
     lexer=lr;
     for(int i=0;i<TOKEN_CACHE_SIZE;i++)
     {
-        TokenCache[i]=lexer->getNextToken();
-        if(TokenCache[i].type==TOKEN_EOF)
-            break;
-        cout<<"<"<<TokenCache[i].txt<<","<<TokenCache[i].type<<">"<<endl;
+        consume();
+        cout<<lexer->getLine()<<","<<lexer->getColumn();
+        cout<<"<"<<TokenCache[i]->txt<<","<<TokenCache[i]->type<<">"<<endl;
     }
-    
+    lexer->getNextToken();
+}
+
+void Parser::consume()
+{
+    TokenCache[index]=lexer->getNextToken();
+    index=(index+1)%TOKEN_CACHE_SIZE;
+}
+
+void Parser::match(tokenType type)
+{
+    if(LL(1)->type==type)
+    {
+        consume();
+    }
+    else {
+        cout<<LL(1)->type<<":"<<type;
+        throw "error";
+    }
 }

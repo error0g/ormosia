@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "Lexer.hpp"
+#include "Parser.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -22,6 +23,8 @@ int main(int argc,char  **args)
      cout<<args[1]<<":file is error"<<endl;
      return -1;
    }
+
+   /* 读取文件*/
    int length;
    char *buffer;
    infile.seekg(0,std::ios::end);
@@ -31,13 +34,13 @@ int main(int argc,char  **args)
    infile.read(buffer,length);
    infile.close();
 
+/*------------------test-start----------------------*/
    Lexer lexer=Lexer(buffer);
-   token token=lexer.getNextToken();
-   while (token.type!=EOF)
-   {
-     cout<<"<"<<token.txt<<","<<token.type<<">"<<endl;
-     token=lexer.getNextToken();
-   }
-   
+   Parser parser(&lexer);
+   bool t=parser.parse();
+   cout<<t;
+ 
+
+/*------------------test-end-----------------------*/
    return 0;
 }

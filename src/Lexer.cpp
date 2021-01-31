@@ -13,6 +13,7 @@ enum DIGIT_TAG{
     DIGIT_TAG_INT_POINT,
     DIGIT_TAG_INT_DOUBLE, 
 };
+//字符串
 enum STRING_TAG
 {
      STRING_TAG_OPEN,
@@ -44,23 +45,18 @@ Lexer::Lexer(char *buffer)
     rwtab[string("return")] =  TOKEN_RETURN_T;
 }
 
-token Lexer::getNextToken(void)
+token* Lexer::getNextToken(void)
 {
-    token next;
+    token* next=NewToken();
     
     while(buff[index]!='\0')
     {
-        //空格
-        if(buff[index]==' ')
+        
+      
+        if(buff[index]=='\n'||buff[index]=='\r'||buff[index]=='\t'||buff[index]==' ')
         {
-            index++;
-            continue;
-        }
-        // 处理换行符
-        if(buff[index]=='\n'||buff[index]=='\t')
-        {
-            // lineNum++;
-            index++;
+           
+            consume();
             continue;
         }
         //标识符 or 关键字
@@ -68,18 +64,18 @@ token Lexer::getNextToken(void)
         {
 
             do{
-                next.txt+=buff[index];
-                index++;
+                next->txt+=buff[index];
+                consume();
             }
             while ((isalpha(buff[index])||isdigit(buff[index]))&&buff[index]!='\0');
-            map<string,tokenType>::iterator iter = rwtab.find(string(next.txt));  
+            map<string,tokenType>::iterator iter = rwtab.find(string(next->txt));  
            if(iter!=rwtab.end()) 
            {
-               next.type=rwtab[next.txt];
+               next->type=rwtab[next->txt];
                return next;
            }
            else{
-                next.type=TOKEN_IDENTIFIER;
+                next->type=TOKEN_IDENTIFIER;
                 return next; 
            }
     
@@ -87,110 +83,110 @@ token Lexer::getNextToken(void)
         //数字
         if(isdigit(buff[index]))
         {
-            DigitState(&next);
+            DigitState(next);
             return next;
         }
 
         switch(buff[index])
         {
-            case '(':TrySplit(&next,TOKEN_LP);return next;
-            case ')':TrySplit(&next,TOKEN_RP);return next;
-            case '{':TrySplit(&next,TOKEN_LC);return next;
-            case '}':TrySplit(&next,TOKEN_RC);return next;
-            case ';':TrySplit(&next,TOKEN_SEMICOLON);return next;
-            case '"':index++;StringState(&next);return next;
+            case '(':TrySplit(next,TOKEN_LP);return next;
+            case ')':TrySplit(next,TOKEN_RP);return next;
+            case '{':TrySplit(next,TOKEN_LC);return next;
+            case '}':TrySplit(next,TOKEN_RC);return next;
+            case ';':TrySplit(next,TOKEN_SEMICOLON);return next;
+            case '"':consume();StringState(next);return next;
             case '=':
             {
-                TrySplit(&next,TOKEN_ASSIGN_T);
+                TrySplit(next,TOKEN_ASSIGN_T);
                 switch (buff[index])
                 {
                   case '=':
                   {
-                    TrySplit(&next,TOKEN_EQ);break;
+                    TrySplit(next,TOKEN_EQ);break;
                   }
                 }
                 return next;
             }
             case '+':{
-                TrySplit(&next,TOKEN_ADD);
+                TrySplit(next,TOKEN_ADD);
                 switch (buff[index])
                 {
-                    case '+': TrySplit(&next,TOKEN_INCREMENT);break;
-                    case '=': TrySplit(&next,TOKEN_ADD_ASSIGN_T);break;
+                    case '+': TrySplit(next,TOKEN_INCREMENT);break;
+                    case '=': TrySplit(next,TOKEN_ADD_ASSIGN_T);break;
                 }
                return next;
             }
             case '-':{
-                TrySplit(&next,TOKEN_SUB);
+                TrySplit(next,TOKEN_SUB);
                 switch (buff[index])
                 {
-                    case '-': TrySplit(&next,TOKEN_DECREMENT);break;
-                    case '=': TrySplit(&next,TOKEN_SUB_ASSIGN_T);break;
+                    case '-': TrySplit(next,TOKEN_DECREMENT);break;
+                    case '=': TrySplit(next,TOKEN_SUB_ASSIGN_T);break;
                 }
                return next;
             }
             case '*':{
-                TrySplit(&next,TOKEN_MUL);
+                TrySplit(next,TOKEN_MUL);
                 switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_MUL_ASSIGN_T);break;
+                    case '=': TrySplit(next,TOKEN_MUL_ASSIGN_T);break;
                 }
                return next;
             }
            case '/':{
-                TrySplit(&next,TOKEN_DIV);
+                TrySplit(next,TOKEN_DIV);
                 switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_DIV_ASSIGN_T);break;
+                    case '=': TrySplit(next,TOKEN_DIV_ASSIGN_T);break;
                 }
                return next;
             }
            case '%':{
-                TrySplit(&next,TOKEN_MOD);
+                TrySplit(next,TOKEN_MOD);
                 switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_MOD_ASSIGN_T);break;
+                    case '=': TrySplit(next,TOKEN_MOD_ASSIGN_T);break;
                 }
                return next;
             }
           case '!':{
-               TrySplit(&next,TOKEN_EXCLAMATION);
+               TrySplit(next,TOKEN_EXCLAMATION);
                switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_NE);break;
+                    case '=': TrySplit(next,TOKEN_NE);break;
                 }
                return next;
           }
           case '>':{
-               TrySplit(&next,TOKEN_GT);
+               TrySplit(next,TOKEN_GT);
                switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_GE);break;
+                    case '=': TrySplit(next,TOKEN_GE);break;
                 }
                return next;
           }
           case '<':{
-               TrySplit(&next,TOKEN_LT);
+               TrySplit(next,TOKEN_LT);
                switch (buff[index])
                 {
-                    case '=': TrySplit(&next,TOKEN_LE);break;
+                    case '=': TrySplit(next,TOKEN_LE);break;
                 }
                return next;
           }
           case '|':{
-               index++;
+               consume();
                switch (buff[index])
                 {
-                    case '|': TrySplit(&next,TOKEN_LOGICAL_OR);break;
+                    case '|': TrySplit(next,TOKEN_LOGICAL_OR);break;
                     default:exit(1);
                 }
                return next;
           }
           case '&':{
-               index++;
+               consume();
                switch (buff[index])
                 {
-                    case '&': TrySplit(&next,TOKEN_LOGICAL_AND);break;
+                    case '&': TrySplit(next,TOKEN_LOGICAL_AND);break;
                     default:exit(1);
                 }
                return next;
@@ -200,7 +196,7 @@ token Lexer::getNextToken(void)
     }
 
     //EOF
-    next.type=TOKEN_EOF;
+    next->type=TOKEN_EOF;
     return next;
 }
 
@@ -211,7 +207,7 @@ void Lexer::DigitState(token *next)
     do{
        tag=DIGIT_TAG_INI;
        next->txt+=buff[index];
-       index++;
+       consume();
     }
     while (isdigit(buff[index]));
     
@@ -219,7 +215,7 @@ void Lexer::DigitState(token *next)
     {
         tag=DIGIT_TAG_INT_POINT;
         next->txt+=buff[index];
-        index++;
+        consume();
     }
   
     
@@ -228,7 +224,7 @@ void Lexer::DigitState(token *next)
         do{
             tag=DIGIT_TAG_INT_DOUBLE;
             next->txt+=buff[index];
-            index++;
+            consume();
           }
           while (isdigit(buff[index]));
      
@@ -259,18 +255,18 @@ void Lexer::StringState(token *next)
       if(tag==STRING_TAG_OPEN&&buff[index]=='"')
         {
             tag=STRING_TAG_CLOSE;
-            index++;
+            consume();
             next->type=TOKEN_STRING_LITERAL;
             return ;
         }
         switch (buff[index])
         {
             case '\n':
-            next->txt+='\n';index++;continue;
+            next->txt+='\n';consume();continue;
             //转义
             case '\\':
             {   
-                index++;
+                consume();
                 switch (buff[index])
                 {
                     case 'n':next->txt+='\n'; break;
@@ -286,7 +282,7 @@ void Lexer::StringState(token *next)
             default:
                 next->txt+=buff[index];
         }
-        index++;
+        consume();
     }
     if(tag==STRING_TAG_OPEN)
     {
@@ -299,5 +295,55 @@ void Lexer::TrySplit(token *next,tokenType type)
 {
     next->txt+=buff[index];
     next->type=type;
+    consume();
+}
+void Lexer::consume()
+{
+
+    if(buff[index]=='\n'||buff[index]=='\r')
+    {
+        column=0;
+        line++;
+    }
+    else column++;
+    
     index++;
+}
+
+int Lexer::getLine()
+{
+    return line; 
+}
+int Lexer::getColumn()
+{
+    return column; 
+}
+
+token* Lexer::NewToken()
+{
+    token* p=(token*)malloc(sizeof(token_tag));
+    if(tokenList==nullptr)
+    {
+        tokenList=p;
+        return p;
+    }
+
+    while (tokenList!=nullptr)
+    {
+        tokenList=tokenList->next;
+    }
+    p->next=tokenList;
+    tokenList=p;
+    return p;
+}
+
+void Lexer::FreeToken()
+{
+    token* p;
+    while (tokenList!=nullptr)
+    {
+        p=tokenList->next;
+        free(tokenList);
+        tokenList=p;
+    }
 }
