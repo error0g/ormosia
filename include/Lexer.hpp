@@ -70,9 +70,9 @@ typedef struct token_tag{
 class Lexer
 {
     private:
-        char  *buff;
+        char  *buff=nullptr;
         int index=0;
-        token* tokenList;
+        token* tokenList=nullptr;
         void DigitState(token *token);
         void StringState(token *token);
         void TrySplit(token *token,tokenType type);

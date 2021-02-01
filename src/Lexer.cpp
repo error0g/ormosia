@@ -48,7 +48,7 @@ Lexer::Lexer(char *buffer)
 token* Lexer::getNextToken(void)
 {
     token* next=NewToken();
-    
+
     while(buff[index]!='\0')
     {
         
@@ -321,7 +321,8 @@ int Lexer::getColumn()
 
 token* Lexer::NewToken()
 {
-    token* p=(token*)malloc(sizeof(token_tag));
+    token* p=new token();
+
     if(tokenList==nullptr)
     {
         tokenList=p;
@@ -339,7 +340,7 @@ void Lexer::FreeToken()
     while (tokenList!=nullptr)
     {
         p=tokenList->next;
-        free(tokenList);
+        delete tokenList;
         tokenList=p;
     }
 }

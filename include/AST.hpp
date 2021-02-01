@@ -1,13 +1,9 @@
 #ifndef _AST_
 #define _AST_
 #include "Lexer.hpp"
+#include<string>
 
-enum NodeType
-{
-    STATEMENT,
-    DEF_FUNCTION,
-    DEF_VAR,
-};
+
 
 enum binExpression {
     ADD,
@@ -16,7 +12,7 @@ enum binExpression {
 
 struct TreeNode
 {
-    NodeType type;
+    string value;
     TreeNode*  left;
     TreeNode*  right;
     union binExpression{
