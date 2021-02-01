@@ -1,0 +1,3 @@
+/Users/error0/ormosia/CMakeFiles/rebuild_cache.dir
+/Users/error0/ormosia/CMakeFiles/edit_cache.dir
+/Users/error0/ormosia/CMakeFiles/test.dir

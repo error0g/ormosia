@@ -30,7 +30,7 @@ int main(int argc,char  **args)
    infile.seekg(0,std::ios::end);
    length=infile.tellg();
    infile.seekg(0,std::ios::beg);
-   buffer=new char[length];
+   buffer=new char[length+1];
    buffer[length]='\0';
    infile.read(buffer,length);
    infile.close();
@@ -39,7 +39,8 @@ int main(int argc,char  **args)
 /*-----------------buffer-test-start----------------------*/
    cout<<"------------------------------------------------"<<endl;
    cout<<buffer<<endl;  
-
+   cout<<length<<endl;  
+/*-----------------buffer-test-end----------------------*/
 
 /*-----------------lexer-test-start-----------------------*/
    cout<<"------------------------------------------------"<<endl;
@@ -52,14 +53,14 @@ int main(int argc,char  **args)
    }
 /*-----------------lexer-test-end-----------------------*/
 
-/*-----------------Parser-test-start----------------------*/
+// /*-----------------Parser-test-start----------------------*/
   cout<<"------------------------------------------------"<<endl;
    Lexer lexer=Lexer(buffer);
    Parser parser(&lexer);
    bool t=parser.parse();
-/*-----------------Parser-test-end-----------------------*/
+// /*-----------------Parser-test-end-----------------------*/
 
 
-   delete[] buffer;
+   // delete[] buffer;
    return 0;
 }

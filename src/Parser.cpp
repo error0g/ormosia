@@ -17,7 +17,7 @@ bool Parser::parse()
 {
     try
     {
-       expr();
+       expr();match(TOKEN_SEMICOLON);
     }
     catch(const char *c)
     {
