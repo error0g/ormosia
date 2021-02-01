@@ -23,24 +23,26 @@ bool Parser::parse()
     {
         std::cerr << c << '\n';
     }
+
+    //释放内存
     lexer->FreeToken();
     return true;
 }
-
+//解析器初始化
 Parser::Parser(Lexer* lr)
 {
+    //Token缓冲池初始化
     lexer=lr;
     for(int i=0;i<TOKEN_CACHE_SIZE;i++)
     {
         consume();
-        cout<<lexer->getLine()<<","<<lexer->getColumn();
-        cout<<"<"<<TokenCache[i]->txt<<","<<TokenCache[i]->type<<">"<<endl;
     }
-    lexer->getNextToken();
+   
 }
 
 void Parser::consume()
 {
+    
     TokenCache[index]=lexer->getNextToken();
     index=(index+1)%TOKEN_CACHE_SIZE;
 }
@@ -53,7 +55,7 @@ void Parser::match(tokenType type)
     }
     else {
         cout<<LL(1)->type<<":"<<type;
-        throw "error";
+        throw "error:match";
     }
 }
 void Parser::expr()
@@ -93,15 +95,19 @@ void Parser::factor()
             match(TOKEN_RP);
             break;
         }
+        case TOKEN_SUB:
+        {
+            match(TOKEN_SUB);
+        }
         case TOKEN_INT_LITERAL:
         {
-            consume();
+            match(TOKEN_INT_LITERAL);
             break;
         }
         default:
         {
             cout<<LL(1)->type<<endl;
-            throw "error";
+            throw "error:factor";
         }
     }
 }
