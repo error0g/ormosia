@@ -209,7 +209,7 @@ void Lexer::DigitState(token *next)
        next->txt+=buff[index];
        consume();
     }
-    while (isdigit(buff[index]));
+    while (buff[index]!='\0'&&isdigit(buff[index]));
     
     if(buff[index]=='.'&&tag==DIGIT_TAG_INI)
     {

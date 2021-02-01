@@ -30,7 +30,7 @@ int main(int argc,char  **args)
    infile.seekg(0,std::ios::end);
    length=infile.tellg();
    infile.seekg(0,std::ios::beg);
-   buffer=new char[length];
+   buffer=new char[length+1];
    buffer[length]='\0';
    infile.read(buffer,length);
    infile.close();
