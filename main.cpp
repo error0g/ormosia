@@ -26,21 +26,19 @@ int main(int argc,char  **args)
 
    /* 读取文件*/
    int length;
-   char *buffer;
+   char *buffer=nullptr;
    infile.seekg(0,std::ios::end);
    length=infile.tellg();
    infile.seekg(0,std::ios::beg);
    buffer=new char[length];
+   buffer[length]='\0';
    infile.read(buffer,length);
    infile.close();
 
-/*------------------test-start----------------------*/
    Lexer lexer=Lexer(buffer);
    Parser parser(&lexer);
    bool t=parser.parse();
-   cout<<t;
- 
 
-/*------------------test-end-----------------------*/
+   delete[] buffer;
    return 0;
 }
