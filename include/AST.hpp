@@ -1,24 +1,31 @@
 #ifndef _AST_
 #define _AST_
 #include "Lexer.hpp"
-#include<string>
+#include <string>
 
+class AST
+{
+    private:
 
-
-enum binExpression {
-    ADD,
-    
+    protected:
+        token* token;
+    public:
+        AST(::token* token);
 };
 
-struct TreeNode
+class BinOp :public AST
 {
-    string value;
-    TreeNode*  left;
-    TreeNode*  right;
-    union binExpression{
-         
-    };
-}TreeNode;
+    private:
+       AST* left;
+       AST* right;
+    public: 
+        BinOp(::token* token,AST* left,AST* right);
+};
 
+class NUM :public AST
+{
+   public:
+        NUM(::token* token);   
+};
 
 #endif

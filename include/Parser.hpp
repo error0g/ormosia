@@ -1,5 +1,6 @@
 #include <string>
 #include "Lexer.hpp"
+#include<map>
 #ifndef _PARSER_
 #define _PARSER_
 #define TOKEN_CACHE_SIZE 8
@@ -15,7 +16,6 @@ class Parser{
         Lexer *lexer;
         void consume();
         void expr();
-        void expr_tail();
         void term();
         void factor();
     public:

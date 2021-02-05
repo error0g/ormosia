@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Lexer.hpp"
 #include "Parser.hpp"
+#include "AST.hpp"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -53,14 +54,32 @@ int main(int argc,char  **args)
    }
 /*-----------------lexer-test-end-----------------------*/
 
-// /*-----------------Parser-test-start----------------------*/
+ /*-----------------Parser-test-start----------------------*/
   cout<<"------------------------------------------------"<<endl;
    Lexer lexer=Lexer(buffer);
    Parser parser(&lexer);
    bool t=parser.parse();
-// /*-----------------Parser-test-end-----------------------*/
+ /*-----------------Parser-test-end-----------------------*/
 
+/*-----------------AST-test-start-----------------------*/
+   token* token1=new token();
+   token1->txt="1";
+   token1->type=TOKEN_INT_LITERAL;
+   token* token2=new token();
+   token2->txt="2";
+   token2->type=TOKEN_INT_LITERAL;
 
-   // delete[] buffer;
+   NUM* num1(token1);
+   NUM* num2(token2);
+   // token* token3=new token();
+   // token1->txt="+";
+   // token2->type=TOKEN_ADD;
+
+   // BinOp* op(&token3,&num1,&num2);
+
+   
+
+/*-----------------AST-test-end-----------------------*/
+   delete[] buffer;
    return 0;
 }
