@@ -1,31 +1,31 @@
+#include"Lexer.hpp"
+
 #ifndef _AST_
 #define _AST_
-#include "Lexer.hpp"
-#include <string>
 
 class AST
 {
-    private:
 
-    protected:
-        token* token;
     public:
-        AST(::token* token);
+        AST* left;
+        AST* right;
+        AST();
+        ::token* token;
+        AST(::token* token,AST* lt,AST* rt);
 };
 
-class BinOp :public AST
+class BinOp:public AST
 {
-    private:
-       AST* left;
-       AST* right;
     public: 
-        BinOp(::token* token,AST* left,AST* right);
+        BinOp();
+        BinOp(::token* token,AST* lt,AST* rt):AST(token,lt,rt){};
 };
 
-class NUM :public AST
+class NUM :public BinOp
 {
    public:
-        NUM(::token* token);   
+        NUM();
+        NUM(::token* token):BinOp(token,nullptr,nullptr){}
 };
 
 #endif

@@ -37,7 +37,7 @@ int main(int argc,char  **args)
 
    Lexer lexer=Lexer(buffer);
    Parser parser(&lexer);
-   bool t=parser.parse();
+  
 
    delete[] buffer;
    return 0;

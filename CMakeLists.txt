@@ -13,4 +13,4 @@ ADD_SUBDIRECTORY(./test)
 
 add_executable(ormosia ${DIR_TOOT_SRCS})
 
-target_link_libraries(ormosia Lexer Parser)
+target_link_libraries(ormosia lib)
