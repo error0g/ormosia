@@ -3,6 +3,7 @@
 #include "Lexer.hpp"
 #include "Parser.hpp"
 #include "AST.hpp"
+
 using std::cout;
 using std::cin;
 using std::endl;
@@ -44,6 +45,7 @@ int main(int argc,char  **args)
 /*-----------------buffer-test-end----------------------*/
 
 /*-----------------lexer-test-start-----------------------*/
+  {
    cout<<"------------------------------------------------"<<endl;
    Lexer lexerTest=Lexer(buffer);
    token* next=lexerTest.getNextToken();
@@ -52,34 +54,55 @@ int main(int argc,char  **args)
       cout<<"<"<<next->txt<<","<<next->type<<">"<<endl;
       next=lexerTest.getNextToken();
    }
+  } 
 /*-----------------lexer-test-end-----------------------*/
 
  /*-----------------Parser-test-start----------------------*/
-  cout<<"------------------------------------------------"<<endl;
+  {
+   cout<<"------------------------------------------------"<<endl;
    Lexer lexer=Lexer(buffer);
    Parser parser(&lexer);
-   bool t=parser.parse();
+   BinOp* ast;
+   bool t=parser.parse(ast);
+  }
  /*-----------------Parser-test-end-----------------------*/
 
 /*-----------------AST-test-start-----------------------*/
+ {
+   cout<<"------------------------------------------------"<<endl;
    token* token1=new token();
    token1->txt="1";
    token1->type=TOKEN_INT_LITERAL;
+
    token* token2=new token();
    token2->txt="2";
    token2->type=TOKEN_INT_LITERAL;
 
-   NUM* num1(token1);
-   NUM* num2(token2);
-   // token* token3=new token();
-   // token1->txt="+";
-   // token2->type=TOKEN_ADD;
 
-   // BinOp* op(&token3,&num1,&num2);
+   NUM num1(token1);
+   NUM num2(token2);
 
-   
+   token* token3=new token();
+   token3->txt="+";
+   token3->type=TOKEN_ADD;
 
-/*-----------------AST-test-end-----------------------*/
+   BinOp op(token3,&num1,&num2);
+   cout<<op.token->txt;
+   cout<<op.left->token->txt;
+   cout<<op.right->token->txt;
+   cout<<endl;
+ } 
+/*-----------------AST-test-2-end-----------------------*/
+   {
+   cout<<"------------------------------------------------"<<endl;
+      Lexer lexer=Lexer(buffer);
+      Parser parser(&lexer);
+      BinOp* ast;
+      parser.parse(ast);
+      
+      
+   }
+/*-----------------AST-test-2-start-----------------------*/
    delete[] buffer;
    return 0;
 }
