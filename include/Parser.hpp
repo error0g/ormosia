@@ -21,7 +21,7 @@ class Parser{
         AST* factor();
     public:
         Parser(Lexer *lr);
-        bool Parser::parse(BinOp* ast);
+        AST* parse();
 };
 
 #endif

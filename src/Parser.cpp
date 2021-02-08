@@ -15,13 +15,14 @@ token *Parser::LL(int k)
     return TokenCache[(index + k - 1) % TOKEN_CACHE_SIZE];
 }
 
-bool Parser::parse(BinOp* ast)
+AST* Parser::parse()
 {
+    AST* Tree;
     try
     {
         while (LL(1)->type != TOKEN_EOF)
         {
-            expr();
+            Tree=expr();
             match(TOKEN_SEMICOLON);
         }
     }
@@ -30,9 +31,7 @@ bool Parser::parse(BinOp* ast)
         std::cerr << c << '\n';
     }
 
-    //释放内存
-    lexer->FreeToken();
-    return true;
+    return Tree;
 }
 
 map<tokenType, int> level;
@@ -75,6 +74,7 @@ void Parser::match(tokenType type)
 AST* Parser::expr()
 {
     AST* node=term();
+    token* current=LL(1);
     bool plus_or_sub = LL(1)->type == TOKEN_ADD || LL(1)->type == TOKEN_SUB;
     while (plus_or_sub)
     {
@@ -92,7 +92,7 @@ AST* Parser::expr()
         }
         }
         
-        node=new BinOp(LL(1),node,term());
+        node=new BinOp(current,node,term());
         plus_or_sub = LL(1)->type == TOKEN_ADD || LL(1)->type == TOKEN_SUB;
     }
     return node;
@@ -100,6 +100,7 @@ AST* Parser::expr()
 AST* Parser::term()
 {
     AST* node=factor();
+    token* current=LL(1);
     bool mul_or_div = LL(1)->type == TOKEN_MUL || LL(1)->type == TOKEN_DIV;
     while (mul_or_div)
     {
@@ -116,7 +117,7 @@ AST* Parser::term()
             break;
         }
         }
-        node=new BinOp(LL(1),node,factor());
+        node=new BinOp(current,node,factor());
         mul_or_div = LL(1)->type == TOKEN_MUL || LL(1)->type == TOKEN_DIV;
     }
     return node;
@@ -124,6 +125,7 @@ AST* Parser::term()
 AST* Parser::factor()
 {
     AST* node;
+    token* current=LL(1);
     bool SUB=false;
     switch (LL(1)->type)
     {
@@ -136,18 +138,18 @@ AST* Parser::factor()
     }
     case TOKEN_SUB:
     {
-        match(TOKEN_SUB);
         SUB=true;
+        match(TOKEN_SUB);
     }
     case TOKEN_INT_LITERAL:
     {
-        match(TOKEN_INT_LITERAL);
-        if(SUB)
+       if(SUB)
         {
             LL(1)->txt="-"+LL(1)->txt;
         }
+        match(TOKEN_INT_LITERAL);
+        node=new NUM(current);
         break;
-        node=new NUM(LL(1));
     }
     default:
     {

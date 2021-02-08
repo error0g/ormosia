@@ -7,10 +7,10 @@ class AST
 {
 
     public:
-        AST* left;
-        AST* right;
+        AST* left=nullptr;
+        AST* right=nullptr;
         AST();
-        ::token* token;
+        ::token* token=nullptr;
         AST(::token* token,AST* lt,AST* rt);
 };
 
@@ -18,14 +18,14 @@ class BinOp:public AST
 {
     public: 
         BinOp();
-        BinOp(::token* token,AST* lt,AST* rt):AST(token,lt,rt){};
+        BinOp(::token* token,AST* lt,AST* rt):AST(token,lt,rt){}
 };
 
-class NUM :public BinOp
+class NUM :public AST
 {
    public:
         NUM();
-        NUM(::token* token):BinOp(token,nullptr,nullptr){}
+        NUM(::token* token):AST(token,nullptr,nullptr){}
 };
 
 #endif

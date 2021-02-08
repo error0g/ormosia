@@ -9,15 +9,34 @@ using std::cin;
 using std::endl;
 using std::ifstream;
 
+void visit(AST* ast)
+{
+   if(ast==nullptr)
+   {
+      return;
+   }
+   if(ast->left!=nullptr)
+   {
+      visit(ast->left);
+   }
+
+   if(ast->right!=nullptr)
+   {
+      visit(ast->right);
+   }
+
+   cout<<ast->token->txt<<endl;
+}
+
 int main(int argc,char  **args)
 {   
 
-   if(argc!=2)
-   {
-    cout<<"args is error"<<endl;
-    return -1;
-   }
-   
+   // if(argc!=2)
+   // {
+   //  cout<<"args is error"<<endl;
+   //  return -1;
+   // }
+   args[1]="../a.ormo";
    ifstream infile;
    infile.open(args[1]);
    if(!infile.is_open())
@@ -59,11 +78,11 @@ int main(int argc,char  **args)
 
  /*-----------------Parser-test-start----------------------*/
   {
-   cout<<"------------------------------------------------"<<endl;
-   Lexer lexer=Lexer(buffer);
-   Parser parser(&lexer);
-   BinOp* ast;
-   bool t=parser.parse(ast);
+   // cout<<"------------------------------------------------"<<endl;
+   // Lexer lexer=Lexer(buffer);
+   // Parser parser(&lexer);
+   // BinOp* ast;
+   // bool t=parser.parse(ast);
   }
  /*-----------------Parser-test-end-----------------------*/
 
@@ -92,17 +111,27 @@ int main(int argc,char  **args)
    cout<<op.right->token->txt;
    cout<<endl;
  } 
-/*-----------------AST-test-2-end-----------------------*/
+/*-----------------AST-test-2-start-----------------------*/
    {
-   cout<<"------------------------------------------------"<<endl;
-      Lexer lexer=Lexer(buffer);
-      Parser parser(&lexer);
-      BinOp* ast;
-      parser.parse(ast);
-      
+      // cout<<"------------------------------------------------"<<endl;
+      // Lexer lexer=Lexer(buffer);
+      // Parser parser(&lexer);
+      // AST* ast=nullptr;
+      // parser.parse(ast);
       
    }
+/*-----------------AST-test-2-end-----------------------*/
 /*-----------------AST-test-2-start-----------------------*/
+
+{
+      cout<<"------------------------------------------------"<<endl;
+      Lexer lexer=Lexer(buffer);
+      Parser parser(&lexer);
+      AST* ast=parser.parse();
+      visit(ast);
+      lexer.FreeToken();
+}
+/*-----------------AST-test-2-end-----------------------*/
    delete[] buffer;
    return 0;
 }
