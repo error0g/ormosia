@@ -1,0 +1,2 @@
+D:\mingw64\bin\ar.exe qc libparser.a CMakeFiles/parser.dir/AST.cpp.obj CMakeFiles/parser.dir/Lexer.cpp.obj CMakeFiles/parser.dir/Parser.cpp.obj
+D:\mingw64\bin\ranlib.exe libparser.a

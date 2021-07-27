@@ -1,0 +1,3 @@
+D:\cmake\bin\cmake.exe -E rm -f CMakeFiles\ovm.dir/objects.a
+D:\mingw64\bin\ar.exe qc CMakeFiles\ovm.dir/objects.a @CMakeFiles\ovm.dir\objects1.rsp
+D:\mingw64\bin\g++.exe    -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic   -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\ovm.dir/objects.a -Wl,--no-whole-archive -o ovm.exe -Wl,--out-implib,libovm.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ovm.dir\linklibs.rsp

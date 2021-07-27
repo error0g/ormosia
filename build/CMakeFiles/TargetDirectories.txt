@@ -1,0 +1,7 @@
+D:/ormosia/build/CMakeFiles/ormosiac.dir
+D:/ormosia/build/CMakeFiles/ovm.dir
+D:/ormosia/build/CMakeFiles/edit_cache.dir
+D:/ormosia/build/CMakeFiles/rebuild_cache.dir
+D:/ormosia/build/src/parser/CMakeFiles/parser.dir
+D:/ormosia/build/src/parser/CMakeFiles/edit_cache.dir
+D:/ormosia/build/src/parser/CMakeFiles/rebuild_cache.dir
