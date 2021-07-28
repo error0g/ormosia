@@ -1,3 +1,0 @@
-D:\cmake\bin\cmake.exe -E rm -f CMakeFiles\ormosiac.dir/objects.a
-D:\mingw64\bin\ar.exe qc CMakeFiles\ormosiac.dir/objects.a @CMakeFiles\ormosiac.dir\objects1.rsp
-D:\mingw64\bin\g++.exe    -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic   -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\ormosiac.dir/objects.a -Wl,--no-whole-archive -o ormosiac.exe -Wl,--out-implib,libormosiac.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ormosiac.dir\linklibs.rsp
