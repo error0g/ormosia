@@ -47,6 +47,7 @@ Lexer::Lexer(string buffer)
 
 token *Lexer::getNextToken(void)
 {
+
     token *next = newToken();
     char currentCharacter = getCurrent();
     while (currentCharacter != '\0')

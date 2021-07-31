@@ -63,13 +63,15 @@ enum tokenType
 };
 
 //token数据结构
-typedef struct token_tag
+struct token
 {
     std::string txt;
     tokenType type;
-    token_tag *next;
+    token *next;
     unsigned int line;
-} token;
+    int pos;
+    int endpos;
+};
 
 class Lexer
 {
@@ -94,7 +96,7 @@ private:
             index++;
     };
 
-    char getCurrent() { return buffer[index]; } //获取当前字符
+    char getCurrent() { return buffer[index]; }
 
     void setTokenAndconsume(token *next, tokenType type)
     {
